@@ -1,0 +1,31 @@
+{
+  "accounts": [
+    {
+      "name": "Alice",
+      "tx_id": "txid1",
+      "tx_index": "0",
+      "pubkey": "pub1",
+      "address": "addr1",
+      "value": "450000",
+      "prev_tx_payload": ""
+    },
+    {
+      "name": "Bob",
+      "tx_id": "txid2",
+      "tx_index": "0",
+      "pubkey": "pub2",
+      "address": "addr2",
+      "value": "450000",
+      "prev_tx_payload": ""
+    },
+    {
+      "name": "Carol",
+      "tx_id": "txid3",
+      "tx_index": "0",
+      "pubkey": "pub3",
+      "address": "addr3",
+      "value": "450000",
+      "prev_tx_payload": ""
+    }
+  ]
+}
