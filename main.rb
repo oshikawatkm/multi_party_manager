@@ -23,11 +23,14 @@ def main
   account_factory = Account_Factory.new()
   for account_data in accounts_data do
     account = account_factory.create(account_data)
+    # account.genarate_pubkey()
     accountPubeys.push(account.pubkey)
     accounts.push(account)
   end
 
-  protocol = Protocol.new(accounts, accountPubeys)
+  nlocktime = json_data["nlocktime"].to_i
+  protocol = Protocol.new(accounts, accountPubeys, nlocktime)
+  protocol.opening_processes(accounts, accountPubeys)
 end
 
 
