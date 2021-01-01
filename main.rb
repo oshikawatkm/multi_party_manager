@@ -29,8 +29,12 @@ def main
   end
 
   nlocktime = json_data["nlocktime"].to_i
-  protocol = Protocol.new(accounts, accountPubeys, nlocktime)
+  protocol = Protocol.new(accountPubeys, nlocktime)
   protocol.opening_processes(accounts, accountPubeys)
+
+  protocol.update_processes(accounts, 0, 1, 10000)
+  protocol.update_processes(accounts, 0, 1, 10000)
+  binding.pry
 end
 
 

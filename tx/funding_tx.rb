@@ -19,7 +19,7 @@ class Funding_tx
     script_pubkey = Bitcoin::Script.from_string("0 #{Bitcoin.sha256(@redeem_script.to_payload.bth)}")
     total_funding_value = 0
     for account in accounts do
-      funding_value = account.value.to_i
+      funding_value = account.start_amount
       total_funding_value += funding_value
       prev_tx = Bitcoin::Protocol::Tx.new(account.prev_tx_payload.htb)
       prev_tx_value = prev_tx.out[account.tx_index].value
