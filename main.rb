@@ -32,8 +32,7 @@ def main
   protocol = Protocol.new(accountPubeys, nlocktime)
   protocol.opening_processes(accounts, accountPubeys)
 
-  protocol.update_processes(accounts, 0, 1, 1000)
-  protocol.update_processes(accounts, 0, 1, 1000)
+  protocol.update_processes(accounts, 0, 1, 5000)
   binding.pry
 end
 

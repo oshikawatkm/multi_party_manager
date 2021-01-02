@@ -29,12 +29,14 @@ class Account
     @commitment_txs.push(commitment_tx)
   end
 
-  def sign_commitment_tx(tx, funding_tx, input_index)
+  def sign_commitment_tx(tx, funding_tx)
     puts "HELLO"
     sign_key = Bitcoin::Key.from_base58(@privkey)
     sig_hash = tx.tx.signature_hash_for_witness_input(0, funding_tx.tx.out.last.pk_script, funding_tx.tx.out.last.value, funding_tx.redeem_script.to_payload)
+    puts "ikudde"
     sig = sign_key.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
-    tx.tx.in[input_index].script_witness.stack << sig
+    puts "ok"
+    tx.tx.in[0].script_witness.stack << sig
     return tx
   end
 

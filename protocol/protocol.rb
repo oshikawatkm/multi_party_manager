@@ -24,19 +24,19 @@ class Protocol
     # hashの交換は行ったこととする
 
     # refound txの作成
-    # accounts.each_with_index{|account, index| 
-    #   commitment_tx = @tx_factory.create_refund_tx(index, accounts, @funding_tx)
-    #   accounts.each_with_index{|account, sign_index|
-    #     commitment_tx = accounts[sign_index].sign_commitment_tx(commitment_tx, @funding_tx, 0)
-    #   }
-    #   account.add_commitment_tx(commitment_tx)
-    # }
+    accounts.each_with_index{|account, index| 
+      commitment_tx = @tx_factory.create_refund_tx(index, accounts, @funding_tx)
+      # accounts.each_with_index{|account, sign_index|
+      #   commitment_tx = accounts[sign_index].sign_commitment_tx(commitment_tx, @funding_tx, 0)
+      # }
+      account.add_commitment_tx(commitment_tx)
+    }
     
     # funding txへの署名
     # accounts.each_with_index{|account, index| 
     #   account.sign_funding_tx(@funding_tx)
     # }
-    binding.pry
+    # binding.pry
     # funding txをブロードキャスト
     puts "funding txをブロードキャストしてください"
   end
@@ -49,11 +49,17 @@ class Protocol
       account.revoke_keys.push(key_pairs)
     }
 
-    accounts.each_with_index{|account, index| 
-      commitment_tx = @tx_factory.create_commitment_tx(index, accounts, @funding_tx, from, to, value)
-      # commitment_tx = account.sign(commitment_tx)
-      account.add_commitment_tx(commitment_tx)
-    }
+    # accounts.each_with_index{|account, index| 
+    #   commitment_tx = @tx_factory.create_commitment_tx(index, accounts, @funding_tx, from, to, value)
+    #   accounts[index].sign_commitment_tx(commitment_tx, @funding_tx)
+    #   account.add_commitment_tx(commitment_tx)
+    # }
+    commitment_tx = @tx_factory.create_commitment_tx(0, accounts, @funding_tx, from, to, value)
+    commitment_tx = accounts[0].sign_commitment_tx(commitment_tx, @funding_tx)
+    commitment_tx = accounts[1].sign_commitment_tx(commitment_tx, @funding_tx)
+    commitment_tx = accounts[2].sign_commitment_tx(commitment_tx, @funding_tx)
+    commitment_tx.tx.in[0].script_witness.stack << @funding_tx.redeem_script.to_payload
+    accounts[0].add_commitment_tx(commitment_tx)
 
     accounts.each_with_index{|account, index|
       if index == from
@@ -62,6 +68,7 @@ class Protocol
         accounts[index].latest_amount += value
       end
     }
+    
     binding.pry
     puts "最新の状態が更新されました"
   end

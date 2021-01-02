@@ -20,7 +20,8 @@ class Commitment_tx
   def create(script_manager, nlocktime, accounts, funding_tx)
     account_length = accounts.length
     @tx = Bitcoin::Protocol::Tx.new
-    @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash(funding_tx.in[0].prev_out_hash.bth, 0))
+    prev_tx = Bitcoin::Protocol::Tx.new(funding_tx.to_payload.bth)
+    @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash("c8b3c183296cf03a6a90610286b0ab5d0ae1531ff28933e88510fdd513178238", 3))
     account_length.times do |i|
       if i != @account_index
         value = accounts[i].latest_amount
@@ -29,7 +30,7 @@ class Commitment_tx
         elsif i == @to_account_index
           value += @move_value
         end
-        @tx.add_out(Bitcoin::Protocol::TxOut.value_to_address(value, accounts[i].address))
+        @tx.add_out(Bitcoin::Protocol::TxOut.value_to_address(value - 100, accounts[i].address))
       end
     end
     account_length.times do |i|
@@ -43,9 +44,10 @@ class Commitment_tx
         splited_lock_value = lock_value / (account_length - 1)
         script_asm, script_redeem, script_hex = script_manager.create_commitment_script(accounts[i].revoke_keys.last["revoke_pubkey"], accounts[i].pubkey, nlocktime)
         script_pubkey = Bitcoin::Script.from_string("0 #{Bitcoin.sha256(script_redeem.to_payload.bth)}")
-        @tx.add_out(Bitcoin::Protocol::TxOut.new(splited_lock_value, script_pubkey.to_payload))
+        @tx.add_out(Bitcoin::Protocol::TxOut.new(splited_lock_value - 100, script_pubkey.to_payload))
       end
     end
+    @tx.in[0].script_witness.stack << ''
   end
 
 end
