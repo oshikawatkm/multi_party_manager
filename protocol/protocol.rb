@@ -24,21 +24,19 @@ class Protocol
     # hashの交換は行ったこととする
 
     # refound txの作成
-    accounts.each_with_index{|account, index| 
-      commitment_tx = @tx_factory.create_refund_tx(index, accounts, @funding_tx)
-      puts 1
-      accounts.each_with_index{|account, sign_index| 
-        commitment_tx = accounts[sign_index].sign(commitment_tx, @funding_tx, 0)
-      }
-      puts 2
-      account.add_commitment_tx(commitment_tx)
-    }
+    # accounts.each_with_index{|account, index| 
+    #   commitment_tx = @tx_factory.create_refund_tx(index, accounts, @funding_tx)
+    #   accounts.each_with_index{|account, sign_index|
+    #     commitment_tx = accounts[sign_index].sign_commitment_tx(commitment_tx, @funding_tx, 0)
+    #   }
+    #   account.add_commitment_tx(commitment_tx)
+    # }
     
     # funding txへの署名
-    accounts.each_with_index{|account, index| 
-      account.sign(0)
-    }
-
+    # accounts.each_with_index{|account, index| 
+    #   account.sign_funding_tx(@funding_tx)
+    # }
+    binding.pry
     # funding txをブロードキャスト
     puts "funding txをブロードキャストしてください"
   end
@@ -53,13 +51,8 @@ class Protocol
 
     accounts.each_with_index{|account, index| 
       commitment_tx = @tx_factory.create_commitment_tx(index, accounts, @funding_tx, from, to, value)
-      commitment_tx = account.sign(commitment_tx)
+      # commitment_tx = account.sign(commitment_tx)
       account.add_commitment_tx(commitment_tx)
-    }
-    
-    # funding txへの署名
-    accounts.each_with_index{|account, index| 
-      account.sign(0)
     }
 
     accounts.each_with_index{|account, index|
@@ -69,7 +62,7 @@ class Protocol
         accounts[index].latest_amount += value
       end
     }
-
+    binding.pry
     puts "最新の状態が更新されました"
   end
 

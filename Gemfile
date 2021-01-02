@@ -4,8 +4,5 @@ source "https://rubygems.org"
 
 git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
-gem "bitcoin-ruby"
-gem "bech32"
-gem "digest"
-gem "openassets"
+gem "bitcoin-ruby", "0.0.20"
 gem "pry"

@@ -25,9 +25,10 @@ class Funding_tx
       prev_tx_value = prev_tx.out[account.tx_index].value
       @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash(account.tx_id, account.tx_index))
       if prev_tx_value - funding_value != 0
-        @tx.add_out(Bitcoin::Protocol::TxOut.value_to_address(prev_tx_value - funding_value, account.address))
+        @tx.add_out(Bitcoin::Protocol::TxOut.value_to_address(prev_tx_value - funding_value - 200, account.address))
       end
     end
     @tx.add_out(Bitcoin::Protocol::TxOut.new(total_funding_value, script_pubkey.to_payload))
+    puts total_funding_value
   end
 end

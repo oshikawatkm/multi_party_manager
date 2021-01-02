@@ -1,5 +1,5 @@
 
-require './account/account'
+require '../account/account'
 require "pry"
 
 class Account_Factory
