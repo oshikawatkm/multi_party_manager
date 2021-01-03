@@ -27,4 +27,10 @@ class Script_Manager
     return asm, redeem, hex
   end
 
+  def create_revoke_script(pubkey)
+    pubkey_hash = Bitcoin.hash160(pubkey)
+    asm = "0 " + pubkey_hash
+    hex = Bitcoin::Script.to_witness_hash160_script(pubkey_hash).bth
+    return asm
+  end
 end

@@ -12,7 +12,9 @@ class Account_Factory
         account_data["value"],
         account_data["address"],
         account_data["privkey"],
-        account_data["pubkey"], 
+        account_data["pubkey"],
+        account_data["revoke_privkey"],
+        account_data["revoke_pubkey"], 
         account_data["prev_tx_payload"])
       return account
   end

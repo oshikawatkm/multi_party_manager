@@ -29,6 +29,5 @@ class Funding_tx
       end
     end
     @tx.add_out(Bitcoin::Protocol::TxOut.new(total_funding_value, script_pubkey.to_payload))
-    puts total_funding_value
   end
 end

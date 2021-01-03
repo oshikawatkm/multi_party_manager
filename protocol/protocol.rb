@@ -17,7 +17,7 @@ class Protocol
     # secretとhashの生成
     accounts.each_with_index{|account, index| 
       keys = Bitcoin::generate_key
-      key_pairs = { "revoke_privpubkey" => keys[0], "revoke_pubkey" => keys[1] }
+      key_pairs = { "revoke_privkey" => keys[0], "revoke_pubkey" => keys[1] }
       account.revoke_keys.push(key_pairs)
     }
 
@@ -55,11 +55,14 @@ class Protocol
     #   account.add_commitment_tx(commitment_tx)
     # }
     commitment_tx = @tx_factory.create_commitment_tx(0, accounts, @funding_tx, from, to, value)
-    commitment_tx = accounts[0].sign_commitment_tx(commitment_tx, @funding_tx)
-    commitment_tx = accounts[1].sign_commitment_tx(commitment_tx, @funding_tx)
-    commitment_tx = accounts[2].sign_commitment_tx(commitment_tx, @funding_tx)
-    commitment_tx.tx.in[0].script_witness.stack << @funding_tx.redeem_script.to_payload
+    # commitment_tx = accounts[0].sign_commitment_tx(commitment_tx, @funding_tx)
+    # commitment_tx = accounts[1].sign_commitment_tx(commitment_tx, @funding_tx)
+    # commitment_tx = accounts[2].sign_commitment_tx(commitment_tx, @funding_tx)
+    # commitment_tx.tx.in[0].script_witness.stack << @funding_tx.redeem_script.to_payload
     accounts[0].add_commitment_tx(commitment_tx)
+
+    revoke_tx = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx)
+    accounts[0].sign_checkout_tx(revoke_tx, commitment_tx)
 
     accounts.each_with_index{|account, index|
       if index == from
