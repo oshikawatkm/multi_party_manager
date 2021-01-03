@@ -62,7 +62,7 @@ class Protocol
     accounts[0].add_commitment_tx(commitment_tx)
 
     revoke_tx = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx)
-    accounts[0].sign_checkout_tx(revoke_tx, commitment_tx)
+    # accounts[0].sign_checkout_tx(revoke_tx, commitment_tx)
 
     accounts.each_with_index{|account, index|
       if index == from
@@ -76,8 +76,14 @@ class Protocol
     puts "最新の状態が更新されました"
   end
 
-  def closing_processes
+  def closing_processes(accounts)
+    closing_tx = @tx_factory.create_closing_tx(accounts)
+     accounts.each_with_index{|account, index| 
+      accounts[index].sign_closing_tx(closing_tx, @funding_tx)
+    }
 
+    binding.pry
+    puts "チャネルを開設しました"
   end
     
 end

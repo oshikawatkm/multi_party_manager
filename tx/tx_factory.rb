@@ -3,6 +3,7 @@ require './tx/funding_tx.rb'
 require './tx/refund_tx.rb'
 require './tx/revoke_tx.rb'
 require './tx/commitment_tx.rb'
+require './tx/closing_tx.rb'
 require 'pry'
 
 class Tx_Factory
@@ -35,14 +36,9 @@ class Tx_Factory
   end
 
   def create_closing_tx(accounts)
-    refund_tx = Refund_tx.new(accounts, funding_tx)
-    return refund_tx
-  end
-
-  def create_revoke_tx(account, commitment_tx)
-    revoke_tx = Revoke_tx.new()
-    revoke_tx.create(account, commitment_tx)
-    return revoke_tx
+    closing_tx = Closing_tx.new()
+    closing_tx.create(accounts)
+    return closing_tx
   end
 
   def create_revoke_tx(account, commitment_tx)

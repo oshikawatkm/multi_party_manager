@@ -33,6 +33,8 @@ def main
   protocol.opening_processes(accounts, accountPubeys)
 
   protocol.update_processes(accounts, 0, 1, 5000)
+
+  protocol.closing_processes(accounts)
   binding.pry
 end
 
