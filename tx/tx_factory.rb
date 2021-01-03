@@ -41,9 +41,9 @@ class Tx_Factory
     return closing_tx
   end
 
-  def create_revoke_tx(account, commitment_tx)
+  def create_revoke_tx(account, commitment_tx, input_index)
     revoke_tx = Revoke_tx.new()
-    revoke_tx.create(account, commitment_tx)
+    revoke_tx.create(account, commitment_tx, input_index)
     return revoke_tx
   end
     
