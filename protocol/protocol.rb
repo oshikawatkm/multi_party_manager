@@ -86,7 +86,7 @@ class Protocol
     }
 
     binding.pry
-    puts "チャネルを開設しました"
+    puts "取引を終了します"
   end
     
 end
