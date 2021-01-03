@@ -49,10 +49,10 @@ class Account
   def sign_revoke_tx(tx, commitment_tx, index)
     sign_key = Bitcoin::Key.from_base58(@revoke_privkey)
 
-    sig_hash = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[index].pk_script, commitment_tx.tx.out[index].value)
+    sig_hash = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[index].pk_script, commitment_tx.tx.out[index].value, commitment_tx.redeem_scripts[index-2].to_payload)
     sig = sign_key.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
-    tx.in[index].script_witness.stack << sig
-    tx.in[index].script_witness.stack << "81"
+    tx.tx.in[0].script_witness.stack << sig
+    tx.tx.in[0].script_witness.stack << "81"
     return tx
   end
 
