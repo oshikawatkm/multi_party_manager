@@ -54,8 +54,8 @@ class Account
     sig = privkey.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
     revoke_sig = revoke_privkey.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
     tx.tx.in[0].script_witness.stack << ""
-    tx.tx.in[0].script_witness.stack << sig
     tx.tx.in[0].script_witness.stack << revoke_sig
+    tx.tx.in[0].script_witness.stack << sig
     tx.tx.in[0].script_witness.stack << "\1"
     tx.tx.in[0].script_witness.stack << commitment_tx.redeem_scripts[index-2].to_payload
     return tx

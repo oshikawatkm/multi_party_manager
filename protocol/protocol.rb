@@ -24,13 +24,13 @@ class Protocol
     # hashの交換は行ったこととする
 
     # refound txの作成
-    accounts.each_with_index{|account, index| 
-      commitment_tx = @tx_factory.create_refund_tx(index, accounts, @funding_tx)
+    # accounts.each_with_index{|account, index| 
+    #   commitment_tx = @tx_factory.create_refund_tx(index, accounts, @funding_tx)
       # accounts.each_with_index{|account, sign_index|
       #   commitment_tx = accounts[sign_index].sign_commitment_tx(commitment_tx, @funding_tx, 0)
       # }
-      account.add_commitment_tx(commitment_tx)
-    }
+    #   account.add_commitment_tx(commitment_tx)
+    # }
     
     # funding txへの署名
     # accounts.each_with_index{|account, index| 
