@@ -46,5 +46,11 @@ class Tx_Factory
     revoke_tx.create(account, commitment_tx, input_index)
     return revoke_tx
   end
+
+  def create_checkout_tx(account, commitment_tx)
+    revoke_tx = Revoke_tx.new()
+    revoke_tx.create(account, commitment_tx)
+    return revoke_tx
+  end
     
 end
