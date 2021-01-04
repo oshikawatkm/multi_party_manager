@@ -30,7 +30,7 @@
     {
       "name": "wallet3",
       "tx_id": "62431c583b714cf9157d82fc5995890a04bbfc966623a327e56ed23aefffaad0",
-      "tx_index": 0,
+      "tx_index": 1,
       "tx_sig": "",
       "pubkey": "03ee04a36b3e5ab6e12e8da30d574f394b7244950f5fd3573c67029a1df8e114fb",
       "privkey": "cUEC5nAFkqorqEnyHbCkMpUd9gHecroghS8AvPyJE3wArfenSfHc",
