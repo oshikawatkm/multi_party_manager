@@ -52,7 +52,7 @@ class Account
     sig_hash = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[index].pk_script, commitment_tx.tx.out[index].value, commitment_tx.redeem_scripts[index-2].to_payload)
     sig = sign_key.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
     tx.tx.in[0].script_witness.stack << sig
-    tx.tx.in[0].script_witness.stack << "81"
+    tx.tx.in[0].script_witness.stack << "\1"
     return tx
   end
 
