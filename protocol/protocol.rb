@@ -15,11 +15,11 @@ class Protocol
     leader_account.add_funding_tx(@funding_tx)
 
     # secretとhashの生成
-    accounts.each_with_index{|account, index| 
-      keys = Bitcoin::generate_key
-      key_pairs = { "revoke_privkey" => keys[0], "revoke_pubkey" => keys[1] }
-      account.revoke_keys.push(key_pairs)
-    }
+    # accounts.each_with_index{|account, index| 
+    #   keys = Bitcoin::generate_key
+    #   key_pairs = { "revoke_privkey" => keys[0], "revoke_pubkey" => keys[1] }
+    #   account.revoke_keys.push(key_pairs)
+    # }
 
     # hashの交換は行ったこととする
 
@@ -43,11 +43,11 @@ class Protocol
 
   def update_processes(accounts, from, to, value)
     #
-    accounts.each_with_index{|account, index| 
-      keys = Bitcoin::generate_key
-      key_pairs = { "revoke_privpubkey" => keys[0], "revoke_pubkey" => keys[1] }
-      account.revoke_keys.push(key_pairs)
-    }
+    # accounts.each_with_index{|account, index| 
+    #   keys = Bitcoin::generate_key
+    #   key_pairs = { "revoke_privpubkey" => keys[0], "revoke_pubkey" => keys[1] }
+    #   account.revoke_keys.push(key_pairs)
+    # }
 
     # accounts.each_with_index{|account, index| 
     #   commitment_tx = @tx_factory.create_commitment_tx(index, accounts, @funding_tx, from, to, value)
@@ -65,8 +65,8 @@ class Protocol
     revoke_tx1 = accounts[1].sign_revoke_tx(revoke_tx1, commitment_tx, 2)
     revoke_tx2 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 3)
     revoke_tx2 = accounts[2].sign_revoke_tx(revoke_tx2, commitment_tx, 3)
-    # checkout_tx = @tx_factory.create_checkout_tx(accounts[0], commitment_tx)
-    # checkout_tx = accounts[0].sign_checkout_tx(checkout_tx, commitment_tx)
+    checkout_tx = @tx_factory.create_checkout_tx(accounts[0], commitment_tx)
+    checkout_tx = accounts[0].sign_checkout_tx(checkout_tx, commitment_tx)
     # checkout_tx = accounts[1].sign_checkout_tx(checkout_tx, commitment_tx)
     # checkout_tx = accounts[2].sign_checkout_tx(checkout_tx, commitment_tx)
 

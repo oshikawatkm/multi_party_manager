@@ -47,15 +47,17 @@ class Account
 
 
   def sign_revoke_tx(tx, commitment_tx, index)
-    privkey 　= Bitcoin::Key.from_base58(@privkey)
-    revoke_privkey 　= Bitcoin::Key.from_base58(@revoke_privkey)
+    privkey = Bitcoin::Key.from_base58(@privkey)
+    revoke_privkey = Bitcoin::Key.from_base58(@revoke_privkey)
 
     sig_hash = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[index].pk_script, commitment_tx.tx.out[index].value, commitment_tx.redeem_scripts[index-2].to_payload)
     sig = privkey.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
     revoke_sig = revoke_privkey.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
+    tx.tx.in[0].script_witness.stack << ""
     tx.tx.in[0].script_witness.stack << sig
     tx.tx.in[0].script_witness.stack << revoke_sig
     tx.tx.in[0].script_witness.stack << "\1"
+    tx.tx.in[0].script_witness.stack << commitment_tx.redeem_scripts[index-2].to_payload
     return tx
   end
 
@@ -74,12 +76,15 @@ class Account
   def sign_checkout_tx(tx, commitment_tx)
     sign_key = Bitcoin::Key.from_base58(@privkey)
     sig_hash2 = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[2].pk_script, commitment_txs.last.tx.out[2].value, commitment_tx.redeem_scripts[0].to_payload)
-    sig_hash3 = tx.tx.signature_hash_for_witness_input(0, commitment_txs.last.tx.out[3].pk_script, commitment_txs.last.tx.out[3].value, commitment_txs.last.redeem_scripts[1].to_payload)
+    sig_hash3 = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[3].pk_script, commitment_tx.tx.out[3].value, commitment_tx.redeem_scripts[1].to_payload)
     sig2 = sign_key.sign(sig_hash2)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
     sig3 = sign_key.sign(sig_hash3)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
+    tx.tx.ver = 2
+    tx.tx.in[0].sequence = [6].pack("6")
     tx.tx.in[0].script_witness.stack << sig2
     tx.tx.in[0].script_witness.stack << ""
     tx.tx.in[0].script_witness.stack << commitment_tx.redeem_scripts[0].to_payload
+    tx.tx.in[1].sequence = [6].pack("6")
     tx.tx.in[1].script_witness.stack << sig3
     tx.tx.in[1].script_witness.stack << ""
     tx.tx.in[1].script_witness.stack << commitment_tx.redeem_scripts[1].to_payload
