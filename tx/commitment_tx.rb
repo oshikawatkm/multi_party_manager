@@ -43,7 +43,7 @@ class Commitment_tx
           lock_value += @move_value
         end
         splited_lock_value = lock_value / (account_length - 1)
-        script_asm, script_redeem, script_hex = script_manager.create_commitment_script(accounts[i].revoke_pubkey, accounts[i].pubkey, nlocktime)
+        script_asm, script_redeem, script_hex = script_manager.create_commitment_script(accounts[@account_index].revoke_pubkey, accounts[i].pubkey, accounts[@account_index].pubkey, nlocktime)
         script_pubkey = Bitcoin::Script.from_string("0 #{Bitcoin.sha256(script_redeem.to_payload.bth)}")
         # script_pubkey = Bitcoin::Script.from_string("#{script_redeem.to_payload.bth}")
         @tx.add_out(Bitcoin::Protocol::TxOut.new(splited_lock_value - 100, script_pubkey.to_payload))
