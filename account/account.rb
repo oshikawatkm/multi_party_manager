@@ -47,11 +47,14 @@ class Account
 
 
   def sign_revoke_tx(tx, commitment_tx, index)
-    sign_key = Bitcoin::Key.from_base58(@revoke_privkey)
+    privkey 　= Bitcoin::Key.from_base58(@privkey)
+    revoke_privkey 　= Bitcoin::Key.from_base58(@revoke_privkey)
 
     sig_hash = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[index].pk_script, commitment_tx.tx.out[index].value, commitment_tx.redeem_scripts[index-2].to_payload)
-    sig = sign_key.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
+    sig = privkey.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
+    revoke_sig = revoke_privkey.sign(sig_hash)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
     tx.tx.in[0].script_witness.stack << sig
+    tx.tx.in[0].script_witness.stack << revoke_sig
     tx.tx.in[0].script_witness.stack << "\1"
     return tx
   end
@@ -78,7 +81,7 @@ class Account
     tx.tx.in[0].script_witness.stack << ""
     tx.tx.in[0].script_witness.stack << commitment_tx.redeem_scripts[0].to_payload
     tx.tx.in[1].script_witness.stack << sig3
-    tx.tx.in[0].script_witness.stack << ""
+    tx.tx.in[1].script_witness.stack << ""
     tx.tx.in[1].script_witness.stack << commitment_tx.redeem_scripts[1].to_payload
     binding.pry
     return tx

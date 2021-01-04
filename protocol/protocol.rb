@@ -55,20 +55,20 @@ class Protocol
     #   account.add_commitment_tx(commitment_tx)
     # }
     commitment_tx = @tx_factory.create_commitment_tx(0, accounts, @funding_tx, from, to, value)
-    # commitment_tx = accounts[0].sign_commitment_tx(commitment_tx, @funding_tx)
-    # commitment_tx = accounts[1].sign_commitment_tx(commitment_tx, @funding_tx)
-    # commitment_tx = accounts[2].sign_commitment_tx(commitment_tx, @funding_tx)
-    # commitment_tx.tx.in[0].script_witness.stack << @funding_tx.redeem_script.to_payload
+    commitment_tx = accounts[0].sign_commitment_tx(commitment_tx, @funding_tx)
+    commitment_tx = accounts[1].sign_commitment_tx(commitment_tx, @funding_tx)
+    commitment_tx = accounts[2].sign_commitment_tx(commitment_tx, @funding_tx)
+    commitment_tx.tx.in[0].script_witness.stack << @funding_tx.redeem_script.to_payload
     accounts[0].add_commitment_tx(commitment_tx)
 
-    # revoke_tx1 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 2)
-    # revoke_tx1 = accounts[1].sign_revoke_tx(revoke_tx1, commitment_tx, 2)
-    # revoke_tx2 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 3)
-    # revoke_tx2 = accounts[2].sign_revoke_tx(revoke_tx2, commitment_tx, 3)
-    checkout_tx = @tx_factory.create_checkout_tx(accounts[0], commitment_tx)
-    checkout_tx = accounts[0].sign_checkout_tx(checkout_tx, commitment_tx)
-    checkout_tx = accounts[1].sign_checkout_tx(checkout_tx, commitment_tx)
-    checkout_tx = accounts[2].sign_checkout_tx(checkout_tx, commitment_tx)
+    revoke_tx1 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 2)
+    revoke_tx1 = accounts[1].sign_revoke_tx(revoke_tx1, commitment_tx, 2)
+    revoke_tx2 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 3)
+    revoke_tx2 = accounts[2].sign_revoke_tx(revoke_tx2, commitment_tx, 3)
+    # checkout_tx = @tx_factory.create_checkout_tx(accounts[0], commitment_tx)
+    # checkout_tx = accounts[0].sign_checkout_tx(checkout_tx, commitment_tx)
+    # checkout_tx = accounts[1].sign_checkout_tx(checkout_tx, commitment_tx)
+    # checkout_tx = accounts[2].sign_checkout_tx(checkout_tx, commitment_tx)
 
     accounts.each_with_index{|account, index|
       if index == from

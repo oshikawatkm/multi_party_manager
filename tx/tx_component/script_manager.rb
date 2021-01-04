@@ -20,8 +20,8 @@ class Script_Manager
   end
 
   def create_commitment_script(revoke_pubkey, pubkey, nlocktime)
-    locktime = 100
-    asm = "OP_IF #{revoke_pubkey} OP_ELSE #{locktime} OP_NOP3 OP_DROP #{pubkey} OP_ENDIF OP_CHECKSIG"
+    locktime = 6
+    asm = "OP_IF 2 #{revoke_pubkey} #{pubkey} 2 OP_CHECKMULTISIG OP_ELSE #{locktime} OP_NOP3 OP_DROP #{pubkey} OP_CHECKSIG OP_ENDIF"
     redeem = Bitcoin::Script.from_string(asm)
     hex = Bitcoin::Script.to_witness_p2sh_script(Bitcoin.sha256(redeem.to_payload.bth)).bth
     return asm, redeem, hex
