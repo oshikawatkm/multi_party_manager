@@ -1,5 +1,6 @@
 require 'pry'
-
+require 'bitcoin'
+Bitcoin.network = :testnet3
 
 class Script_Manager
 

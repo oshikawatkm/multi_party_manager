@@ -6,6 +6,8 @@ require './tx/checkout_tx.rb'
 require './tx/commitment_tx.rb'
 require './tx/closing_tx.rb'
 require 'pry'
+require 'bitcoin'
+Bitcoin.network = :testnet3
 
 class Tx_Factory
 

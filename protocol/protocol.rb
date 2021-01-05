@@ -1,5 +1,6 @@
 require './tx/tx_factory.rb'
 require 'bitcoin'
+Bitcoin.network = :testnet3
 require "pry"
 
 class Protocol

@@ -1,4 +1,5 @@
-
+require 'bitcoin'
+Bitcoin.network = :testnet3
 
 class Closing_tx
 

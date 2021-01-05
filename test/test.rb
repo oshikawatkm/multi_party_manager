@@ -1,5 +1,5 @@
 require 'bitcoin'
-Bitcoin::network = :regtest
+Bitcoin.network = :testnet3
 
 require 'pry'
 
