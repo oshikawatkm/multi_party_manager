@@ -74,7 +74,7 @@ class Account
   end
 
   def sign_checkout_tx(tx, commitment_tx)
-    sign_key = Bitcoin::Key.from_base58(@privkey)
+    sign_key = Bitcoin::Key.from_base58(@revoke_privkey)
     sig_hash2 = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[2].pk_script, commitment_tx.tx.out[2].value, commitment_tx.redeem_scripts[0].to_payload)
     sig_hash3 = tx.tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[3].pk_script, commitment_tx.tx.out[3].value, commitment_tx.redeem_scripts[1].to_payload)
     sig2 = sign_key.sign(sig_hash2)+ [Bitcoin::Script::SIGHASH_TYPE[:all]].pack("C")
@@ -82,11 +82,11 @@ class Account
     tx.tx.ver = 2
     tx.tx.in[0].sequence = [6].pack("V")
     tx.tx.in[0].script_witness.stack << sig2
-    tx.tx.in[0].script_witness.stack << ""
+    # tx.tx.in[0].script_witness.stack << ""
     tx.tx.in[0].script_witness.stack << commitment_tx.redeem_scripts[0].to_payload
     tx.tx.in[1].sequence = [6].pack("V")
     tx.tx.in[1].script_witness.stack << sig3
-    tx.tx.in[1].script_witness.stack << ""
+    # tx.tx.in[1].script_witness.stack << ""
     tx.tx.in[1].script_witness.stack << commitment_tx.redeem_scripts[1].to_payload
     return tx
   end
