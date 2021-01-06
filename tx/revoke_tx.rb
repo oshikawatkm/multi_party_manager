@@ -11,7 +11,7 @@ class Revoke_tx
   def create(account, commitment_tx, input_index)
     value = commitment_tx.out[input_index].value
     @tx = Bitcoin::Protocol::Tx.new
-    @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash("25dc4773f0bb2fe51a115adcaf0cd23c83f3e8e2073517f58b4f867e9e67fbc6", input_index))
+    @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash("", input_index))
     @tx.add_out(Bitcoin::Protocol::TxOut.value_to_address(value -300, account.address))
   end
 

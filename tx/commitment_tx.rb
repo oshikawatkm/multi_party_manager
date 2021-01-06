@@ -22,7 +22,7 @@ class Commitment_tx
     account_length = accounts.length
     @tx = Bitcoin::Protocol::Tx.new
     # prev_tx = Bitcoin::Protocol::Tx.new(funding_tx.to_payload.bth)
-    @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash("b1a3f844a27c31f1d1c511a96d02915c550459b31ef56c127b7dbf40bb1120ab", 3))
+    @tx.add_in(Bitcoin::Protocol::TxIn.from_hex_hash("", 4))
     account_length.times do |i|
       if i != @account_index
         value = accounts[i].latest_amount

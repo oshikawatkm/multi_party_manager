@@ -66,6 +66,10 @@ class Protocol
     revoke_tx1 = accounts[1].sign_revoke_tx(revoke_tx1, commitment_tx, accounts[0].revoke_privkey, 2)
     revoke_tx2 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 3)
     revoke_tx2 = accounts[2].sign_revoke_tx(revoke_tx2, commitment_tx, accounts[0].revoke_privkey, 3)
+    revoke_tx1 = @tx_factory.create_revoke_tx(accounts[0], commitment_tx.tx, 2)
+    revoke_tx3 = accounts[3].sign_revoke_tx(revoke_tx1, commitment_tx, accounts[0].revoke_privkey, 4)
+
+    
     checkout_tx = @tx_factory.create_checkout_tx(accounts[0], commitment_tx)
     checkout_tx = accounts[0].sign_checkout_tx(checkout_tx, commitment_tx)
     # checkout_tx = accounts[1].sign_checkout_tx(checkout_tx, commitment_tx)
