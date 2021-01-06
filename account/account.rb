@@ -61,17 +61,17 @@ class Account
     return tx
   end
 
-  def sign_revoke_sh_tx(tx, commitment_tx)
-    sign_key = Bitcoin::Key.from_base58(@revoke_privkey)
+  # def sign_revoke_sh_tx(tx, commitment_tx)
+  #   sign_key = Bitcoin::Key.from_base58(@revoke_privkey)
 
-    sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[2].pk_script, commitment_tx.tx.out[2].value)
-    sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[3].pk_script, commitment_tx.tx.out[3].value)
-    sig2 = sign_key.sign(sig_hash2)
-    sig3 = sign_key.sign(sig_hash3)
-    tx.tx.in[0].script_sig = Bitcoin::Script.to_signature_pubkey_script(sig2)
-    tx.tx.in[1].script_sig
-    return tx
-  end
+  #   sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[2].pk_script, commitment_tx.tx.out[2].value)
+  #   sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[3].pk_script, commitment_tx.tx.out[3].value)
+  #   sig2 = sign_key.sign(sig_hash2)
+  #   sig3 = sign_key.sign(sig_hash3)
+  #   tx.tx.in[0].script_sig = Bitcoin::Script.to_signature_pubkey_script(sig2)
+  #   tx.tx.in[1].script_sig
+  #   return tx
+  # end
 
   def sign_checkout_tx(tx, commitment_tx)
     sign_key = Bitcoin::Key.from_base58(@privkey)
@@ -82,7 +82,7 @@ class Account
     #tx.tx.ver = 2
     #tx.tx.in[0].sequence = [6].pack("V")
     tx.tx.in[0].script_witness.stack << sig2
-    # tx.tx.in[0].script_witness.stack << ""
+    tx.tx.in[0].script_witness.stack << ""
     tx.tx.in[0].script_witness.stack << commitment_tx.redeem_scripts[0].to_payload
     #tx.tx.in[1].sequence = [6].pack("V")
     tx.tx.in[1].script_witness.stack << sig3
@@ -91,17 +91,17 @@ class Account
     return tx
   end
 
-  def sign_checkout_sh_tx(tx, commitment_tx)
-    sign_key = Bitcoin::Key.from_base58(@privkey)
+  # def sign_checkout_sh_tx(tx, commitment_tx)
+  #   sign_key = Bitcoin::Key.from_base58(@privkey)
     
-    sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[2].pk_script, commitment_tx.tx.out[2].value)
-    sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[3].pk_script, commitment_tx.tx.out[3].value)
-    sig2 = sign_key.sign(sig_hash2)
-    sig3 = sign_key.sign(sig_hash3)
-    tx.tx.in[0].script_sig = Bitcoin::Script.to_signature_pubkey_script(sig2, 0)
-    tx.tx.in[1].script_sig = Bitcoin::Script.to_signature_pubkey_script(sig3, 0)
-    return tx
-  end
+  #   sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[2].pk_script, commitment_tx.tx.out[2].value)
+  #   sig_hash2 = tx.signature_hash_for_witness_input(0, commitment_tx.tx.out[3].pk_script, commitment_tx.tx.out[3].value)
+  #   sig2 = sign_key.sign(sig_hash2)
+  #   sig3 = sign_key.sign(sig_hash3)
+  #   tx.tx.in[0].script_sig = Bitcoin::Script.to_signature_pubkey_script(sig2, 0)
+  #   tx.tx.in[1].script_sig = Bitcoin::Script.to_signature_pubkey_script(sig3, 0)
+  #   return tx
+  # end
 
   def sign_closing_tx(tx, funding_tx)
     sign_key = Bitcoin::Key.from_base58(@privkey)
